@@ -1,0 +1,36 @@
+{
+  "name": "koko",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Composition-based CLI toolkit — wraps cac, picocolors, cli-progress, cli-spinners",
+  "license": "MIT",
+  "author": "",
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "test": "bun test",
+    "lint": "biome check src tests",
+    "format": "biome format --write src tests",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "cac": "^7.0.0",
+    "cli-progress": "^3.12.0",
+    "cli-spinners": "^3.4.0",
+    "picocolors": "^1.1.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.16",
+    "@types/cli-progress": "^3.11.0",
+    "tsdown": "^0.22.2",
+    "typescript": "^6.0.3"
+  }
+}
