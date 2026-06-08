@@ -20,7 +20,7 @@ function delay(ms: number) {
 
 console.log(color.bold(color.cyan("\n═══ Basic progress bar ═══\n")));
 
-const bar = createProgress({ total: 100, width: 30 });
+const bar = createProgress({ total: 100, barsize: 30 });
 for (let i = 0; i <= 100; i += 10) {
   bar.update(i);
   await delay(80);
@@ -31,7 +31,7 @@ bar.stop();
 
 console.log(color.bold(color.cyan("\n═══ Increment by 1 (default) ═══\n")));
 
-const bar2 = createProgress({ total: 10, width: 20 });
+const bar2 = createProgress({ total: 10, barsize: 20 });
 for (let i = 0; i < 10; i++) {
   bar2.increment();
   await delay(60);
@@ -44,7 +44,7 @@ console.log(color.bold(color.cyan("\n═══ Custom format ═══\n")));
 
 const bar3 = createProgress({
   total: 8,
-  width: 20,
+  barsize: 20,
   format: "  {bar}  {percentage}%  |  {value}/{total} files",
 });
 for (let i = 1; i <= 8; i++) {
@@ -69,7 +69,7 @@ const packages = [
 
 const bar4 = createProgress({
   total: packages.length,
-  width: 25,
+  barsize: 25,
   format: "  {bar}  {percentage}%  |  Installing {package}",
 });
 
@@ -94,7 +94,7 @@ async function mapProgress<T, R>(
 ): Promise<R[]> {
   const bar = createProgress({
     total: items.length,
-    width: 25,
+    barsize: 25,
     format: label
       ? `  {bar}  {percentage}%  |  ${label} {value}/{total}`
       : "  {bar}  {percentage}%",

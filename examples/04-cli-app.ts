@@ -83,7 +83,7 @@ cli.command("build <input>", "Build the project from a source directory", (cmd) 
 
     // ctx.progress for post-build analysis
     console.log(ctx.color.dim("\n  Analyzing bundle..."));
-    const bar = ctx.progress({ total: 5, width: 20 });
+    const bar = ctx.progress({ total: 5, barsize: 20 });
     for (let i = 0; i < 5; i++) {
       bar.increment(1);
       await delay(150);

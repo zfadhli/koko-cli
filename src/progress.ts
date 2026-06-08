@@ -25,7 +25,7 @@ export function createProgress(options: ProgressOptions): ProgressInstance {
       format: options.format,
       barCompleteChar: options.barCompleteChar,
       barIncompleteChar: options.barIncompleteChar,
-      width: options.width,
+      barsize: options.barsize,
       clearOnComplete: options.clearOnComplete,
       stopOnComplete: options.stopOnComplete,
     },

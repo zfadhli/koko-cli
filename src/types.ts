@@ -8,7 +8,7 @@ export interface ProgressOptions {
   format?: string;
   barCompleteChar?: string;
   barIncompleteChar?: string;
-  width?: number;
+  barsize?: number;
   clearOnComplete?: boolean;
   stopOnComplete?: boolean;
 }

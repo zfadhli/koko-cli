@@ -45,7 +45,7 @@ describe("createSpinner", () => {
     const spin = createSpinner("task");
     spin.start();
     spin.succeed("done");
-    const calls = stdoutWrite.mock.calls.map((c) => String(c[0]));
+    const calls = stdoutWrite.mock.calls.map((c: unknown[]) => String(c[0]));
     const finalCall = calls[calls.length - 1];
     expect(finalCall).toContain(ICON_SUCCESS);
     expect(finalCall).toContain("done");
@@ -55,7 +55,7 @@ describe("createSpinner", () => {
     const spin = createSpinner("task");
     spin.start();
     spin.fail("failed");
-    const calls = stdoutWrite.mock.calls.map((c) => String(c[0]));
+    const calls = stdoutWrite.mock.calls.map((c: unknown[]) => String(c[0]));
     const finalCall = calls[calls.length - 1];
     expect(finalCall).toContain(ICON_ERROR);
     expect(finalCall).toContain("failed");
@@ -65,7 +65,7 @@ describe("createSpinner", () => {
     const spin = createSpinner("task");
     spin.start();
     spin.warn("caution");
-    const calls = stdoutWrite.mock.calls.map((c) => String(c[0]));
+    const calls = stdoutWrite.mock.calls.map((c: unknown[]) => String(c[0]));
     const finalCall = calls[calls.length - 1];
     expect(finalCall).toContain(ICON_WARN);
     expect(finalCall).toContain("caution");
@@ -75,7 +75,7 @@ describe("createSpinner", () => {
     const spin = createSpinner("task");
     spin.start();
     spin.info("details");
-    const calls = stdoutWrite.mock.calls.map((c) => String(c[0]));
+    const calls = stdoutWrite.mock.calls.map((c: unknown[]) => String(c[0]));
     const finalCall = calls[calls.length - 1];
     expect(finalCall).toContain(ICON_INFO);
     expect(finalCall).toContain("details");

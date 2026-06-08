@@ -82,7 +82,7 @@ export function createCLI(name: string, version?: string): CLIBuilder {
 
       const cmdBuilder: CommandBuilder = {
         option(name, desc, config) {
-          rawCmd.option(name, desc, config);
+          rawCmd.option(name, desc ?? "", config);
           return cmdBuilder;
         },
         alias(name) {

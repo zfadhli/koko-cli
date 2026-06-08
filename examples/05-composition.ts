@@ -109,7 +109,7 @@ const packages = [
 async function batchInstall() {
   const progress = createProgress({
     total: packages.length,
-    width: 25,
+    barsize: 25,
     format: "  {bar}  {percentage}%  |  Installing {name} {version}",
   });
 
