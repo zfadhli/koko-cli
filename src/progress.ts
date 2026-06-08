@@ -17,9 +17,7 @@ import type { ProgressInstance, ProgressOptions } from "./types";
  */
 export function createProgress(options: ProgressOptions): ProgressInstance {
   if (options.total <= 0) {
-    throw new CliToolkitError(
-      `Progress total must be > 0, got ${options.total}`,
-    );
+    throw new CliToolkitError(`Progress total must be > 0, got ${options.total}`);
   }
 
   const bar = new cliProgress.SingleBar(
@@ -31,7 +29,7 @@ export function createProgress(options: ProgressOptions): ProgressInstance {
       clearOnComplete: options.clearOnComplete,
       stopOnComplete: options.stopOnComplete,
     },
-    cliProgress.Presets.shades_classic,
+    cliProgress.Presets.rect,
   );
 
   let started = false;
@@ -57,9 +55,9 @@ export function createProgress(options: ProgressOptions): ProgressInstance {
       bar.update(current, payload);
     },
     increment(delta?: number, payload?: Record<string, unknown>) {
-      currentValue += delta ?? 1;
       ensureStarted();
-      bar.increment(delta, payload);
+      currentValue += delta ?? 1;
+      bar.update(currentValue, payload);
     },
     stop() {
       if (started) {

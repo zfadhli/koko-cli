@@ -1,6 +1,7 @@
-import { afterEach, beforeEach, describe, expect, mock, spyOn, test } from "bun:test";
-import { createSpinner } from "../src/spinner";
+import { afterEach, beforeEach, describe, expect, spyOn, test } from "bun:test";
 import { CliToolkitError } from "../src/errors";
+import { ICON_ERROR, ICON_INFO, ICON_SUCCESS, ICON_WARN } from "../src/icons";
+import { createSpinner } from "../src/spinner";
 
 describe("createSpinner", () => {
   let stdoutWrite: ReturnType<typeof spyOn>;
@@ -46,7 +47,7 @@ describe("createSpinner", () => {
     spin.succeed("done");
     const calls = stdoutWrite.mock.calls.map((c) => String(c[0]));
     const finalCall = calls[calls.length - 1];
-    expect(finalCall).toContain("✔");
+    expect(finalCall).toContain(ICON_SUCCESS);
     expect(finalCall).toContain("done");
   });
 
@@ -56,7 +57,7 @@ describe("createSpinner", () => {
     spin.fail("failed");
     const calls = stdoutWrite.mock.calls.map((c) => String(c[0]));
     const finalCall = calls[calls.length - 1];
-    expect(finalCall).toContain("✘");
+    expect(finalCall).toContain(ICON_ERROR);
     expect(finalCall).toContain("failed");
   });
 
@@ -66,7 +67,7 @@ describe("createSpinner", () => {
     spin.warn("caution");
     const calls = stdoutWrite.mock.calls.map((c) => String(c[0]));
     const finalCall = calls[calls.length - 1];
-    expect(finalCall).toContain("⚠");
+    expect(finalCall).toContain(ICON_WARN);
     expect(finalCall).toContain("caution");
   });
 
@@ -76,14 +77,12 @@ describe("createSpinner", () => {
     spin.info("details");
     const calls = stdoutWrite.mock.calls.map((c) => String(c[0]));
     const finalCall = calls[calls.length - 1];
-    expect(finalCall).toContain("ℹ");
+    expect(finalCall).toContain(ICON_INFO);
     expect(finalCall).toContain("details");
   });
 
   test("throws on invalid spinner style", () => {
-    expect(() =>
-      createSpinner("test", { style: "nonexistent" as never })
-    ).toThrow(CliToolkitError);
+    expect(() => createSpinner("test", { style: "nonexistent" as never })).toThrow(CliToolkitError);
   });
 
   test("text getter/setter works", () => {

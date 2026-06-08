@@ -2,21 +2,21 @@ import process from "node:process";
 import spinners from "cli-spinners";
 import { color } from "./color";
 import { CliToolkitError } from "./errors";
+import { ICON_ERROR, ICON_INFO, ICON_SUCCESS, ICON_WARN } from "./icons";
 import type { SpinnerInstance, SpinnerOptions, SpinnerStyle } from "./types";
 
-const frameSets: Record<SpinnerStyle, { interval: number; frames: string[] }> =
-  {
-    dots: spinners.dots,
-    dots2: spinners.dots2,
-    line: spinners.line,
-    arc: spinners.arc,
-    bouncingBar: spinners.bouncingBar,
-    clock: spinners.clock,
-    moon: spinners.moon,
-    toggle: spinners.toggle12,
-    arrow: spinners.arrow3,
-    shark: spinners.shark,
-  } as const;
+const frameSets: Record<SpinnerStyle, { interval: number; frames: string[] }> = {
+  dots: spinners.dots,
+  dots2: spinners.dots2,
+  line: spinners.line,
+  arc: spinners.arc,
+  bouncingBar: spinners.bouncingBar,
+  clock: spinners.clock,
+  moon: spinners.moon,
+  toggle: spinners.toggle12,
+  arrow: spinners.arrow3,
+  shark: spinners.shark,
+} as const;
 
 const defaultStyle: SpinnerStyle = "dots";
 
@@ -44,7 +44,9 @@ export function createSpinner(text?: string, options?: SpinnerOptions): SpinnerI
 
   const frameSet = frameSets[style as SpinnerStyle];
   if (!frameSet && !customFrames) {
-    throw new CliToolkitError(`Unknown spinner style: "${style}". Available styles: ${Object.keys(frameSets).join(", ")}`);
+    throw new CliToolkitError(
+      `Unknown spinner style: "${style}". Available styles: ${Object.keys(frameSets).join(", ")}`,
+    );
   }
 
   const frames = customFrames ?? frameSet.frames;
@@ -56,12 +58,8 @@ export function createSpinner(text?: string, options?: SpinnerOptions): SpinnerI
   let spinning = false;
 
   function write(frame: string) {
-    const coloredFrame = spinnerColor
-      ? color[spinnerColor](frame)
-      : frame;
-    const line = currentText
-      ? `${coloredFrame} ${currentText}`
-      : coloredFrame;
+    const coloredFrame = spinnerColor ? color[spinnerColor](frame) : frame;
+    const line = currentText ? `${coloredFrame} ${currentText}` : coloredFrame;
     process.stdout.write(`\r${line}\x1b[K`);
   }
 
@@ -102,25 +100,25 @@ export function createSpinner(text?: string, options?: SpinnerOptions): SpinnerI
 
   function succeed(text?: string) {
     const t = text ?? currentText;
-    const prefix = color.green("✔");
+    const prefix = color.green(ICON_SUCCESS);
     stop(`${prefix} ${t}`);
   }
 
   function fail(text?: string) {
     const t = text ?? currentText;
-    const prefix = color.red("✘");
+    const prefix = color.red(ICON_ERROR);
     stop(`${prefix} ${t}`);
   }
 
   function warn(text?: string) {
     const t = text ?? currentText;
-    const prefix = color.yellow("⚠");
+    const prefix = color.yellow(ICON_WARN);
     stop(`${prefix} ${t}`);
   }
 
   function info(text?: string) {
     const t = text ?? currentText;
-    const prefix = color.blue("ℹ");
+    const prefix = color.blue(ICON_INFO);
     stop(`${prefix} ${t}`);
   }
 

@@ -1,8 +1,16 @@
 import cac from "cac";
 import { color } from "./color";
+import { CliToolkitError } from "./errors";
 import { createProgress } from "./progress";
 import { createSpinner } from "./spinner";
-import type { CLIAction, CLIBuilder, CommandBuilder, CommandSetup, ProgressOptions, SpinnerInstance } from "./types";
+import type {
+  CLIAction,
+  CLIBuilder,
+  CommandBuilder,
+  CommandSetup,
+  ProgressOptions,
+  SpinnerInstance,
+} from "./types";
 
 /**
  * Parse positional argument names from a CAC command pattern.
@@ -12,8 +20,7 @@ import type { CLIAction, CLIBuilder, CommandBuilder, CommandSetup, ProgressOptio
 function parsePositionalNames(rawName: string): string[] {
   const names: string[] = [];
   const re = /[<[](\w+)[>\]]/g;
-  let match: RegExpExecArray | null;
-  while ((match = re.exec(rawName)) !== null) {
+  for (let match = re.exec(rawName); match; match = re.exec(rawName)) {
     names.push(match[1]);
   }
   return names;
@@ -101,7 +108,21 @@ export function createCLI(name: string, version?: string): CLIBuilder {
     },
 
     parse(argv?: string[]) {
-      cli.parse(argv ?? process.argv.slice(2));
+      try {
+        if (argv) {
+          // Direct argv (tests use format: ['node', 'test', 'status'])
+          cli.parse(argv);
+        } else {
+          // Pass full process.argv — CAC internally does argv.slice(2)
+          cli.parse(process.argv);
+        }
+      } catch (err) {
+        // Wrap CAC errors (not exported, match by name) into CliToolkitError
+        if (err instanceof Error && err.name === "CACError") {
+          throw new CliToolkitError(err.message);
+        }
+        throw err;
+      }
     },
   };
 

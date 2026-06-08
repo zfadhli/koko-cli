@@ -19,7 +19,13 @@
     "test": "bun test",
     "lint": "biome check src tests",
     "format": "biome format --write src tests",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "example:color": "bun run examples/01-color.ts",
+    "example:spinner": "bun run examples/02-spinner.ts",
+    "example:progress": "bun run examples/03-progress.ts",
+    "example:cli": "bun run examples/04-cli-app.ts",
+    "example:composition": "bun run examples/05-composition.ts",
+    "examples": "bun run examples/01-color.ts && bun run examples/02-spinner.ts && bun run examples/03-progress.ts && bun run examples/04-cli-app.ts --help && bun run examples/05-composition.ts"
   },
   "dependencies": {
     "cac": "^7.0.0",

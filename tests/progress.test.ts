@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
-import { createProgress } from "../src/progress";
 import { CliToolkitError } from "../src/errors";
+import { createProgress } from "../src/progress";
 
 describe("createProgress", () => {
   test("creates a progress instance with the correct interface", () => {
@@ -17,9 +17,7 @@ describe("createProgress", () => {
 
   test("throws when total is zero", () => {
     expect(() => createProgress({ total: 0 })).toThrow(CliToolkitError);
-    expect(() => createProgress({ total: 0 })).toThrow(
-      "total must be > 0, got 0",
-    );
+    expect(() => createProgress({ total: 0 })).toThrow("total must be > 0, got 0");
   });
 
   test("throws when total is negative", () => {

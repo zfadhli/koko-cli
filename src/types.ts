@@ -73,11 +73,7 @@ export interface OptionConfig {
 }
 
 export interface CommandBuilder {
-  option(
-    name: string,
-    description?: string,
-    config?: OptionConfig,
-  ): CommandBuilder;
+  option(name: string, description?: string, config?: OptionConfig): CommandBuilder;
   alias(name: string): CommandBuilder;
   action<T>(handler: CLIAction<T>): void;
 }
