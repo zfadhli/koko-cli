@@ -14,15 +14,15 @@ koko follows a **function-based Composition API** (inspired by Vue 3):
 ## Install
 
 ```bash
-bun add koko
+bun add @zfadhli/koko-cli
 # or
-npm install koko
+npm install @zfadhli/koko-cli
 ```
 
 ## Quick start
 
 ```ts
-import { color, createSpinner, createProgress, createCLI } from "koko";
+import { color, createSpinner, createProgress, createCLI } from "@zfadhli/koko-cli";
 
 // Colors
 console.log(color.red("error"));
@@ -163,7 +163,7 @@ cli.parse();
 Standardized icon constants:
 
 ```ts
-import { ICON_SUCCESS, ICON_ERROR, ICON_WARN, ICON_INFO } from "koko";
+import { ICON_SUCCESS, ICON_ERROR, ICON_WARN, ICON_INFO } from "@zfadhli/koko-cli";
 ```
 
 | Constant | Character | Description |
@@ -176,7 +176,7 @@ import { ICON_SUCCESS, ICON_ERROR, ICON_WARN, ICON_INFO } from "koko";
 ### Errors
 
 ```ts
-import { CliToolkitError } from "koko";
+import { CliToolkitError } from "@zfadhli/koko-cli";
 
 try {
   createProgress({ total: 0 });
