@@ -2,15 +2,26 @@
   "name": "koko",
   "type": "module",
   "version": "0.0.1",
-  "private": true,
   "description": "Composition-based CLI toolkit — wraps cac, picocolors, cli-progress, cli-spinners",
   "license": "MIT",
-  "author": "",
-  "exports": {
-    ".": "./dist/index.js"
+  "author": "Koko contributors",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/user/koko.git"
   },
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "bugs": {
+    "url": "https://github.com/user/koko/issues"
+  },
+  "homepage": "https://github.com/user/koko#readme",
+  "engines": {
+    "node": ">=18"
+  },
+  "exports": {
+    ".": "./dist/index.mjs",
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "files": [
     "dist"
   ],
