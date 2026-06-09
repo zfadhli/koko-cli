@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] — 2025-06-09
+
+### Changed
+
+- Package renamed from `koko` to `@zfadhli/koko-cli` (names `koko` and `koko-cli` already taken on npm)
+- `.github/workflows/publish.yml` simplified: uses `npm config set` for auth token, `--access public` flag, removed test step
+- README updated: install command and imports now use `@zfadhli/koko-cli`
+
+[0.1.1]: https://github.com/zfadhli/koko-cli/releases/tag/0.1.1
+
 ## [0.1.0] — 2025-06-09
 
 ### Added
