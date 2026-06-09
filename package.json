@@ -1,5 +1,5 @@
 {
-  "name": "koko",
+  "name": "@zfadhli/koko-cli",
   "type": "module",
   "version": "0.1.0",
   "description": "Composition-based CLI toolkit — wraps cac, picocolors, cli-progress, cli-spinners",
@@ -7,12 +7,12 @@
   "author": "Koko contributors",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/user/koko.git"
+    "url": "git+https://github.com/zfadhli/koko-cli.git"
   },
   "bugs": {
-    "url": "https://github.com/user/koko/issues"
+    "url": "https://github.com/zfadhli/koko-cli/issues"
   },
-  "homepage": "https://github.com/user/koko#readme",
+  "homepage": "https://github.com/zfadhli/koko-cli#readme",
   "engines": {
     "node": ">=18"
   },
