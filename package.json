@@ -1,7 +1,7 @@
 {
   "name": "@zfadhli/koko-cli",
   "type": "module",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Composition-based CLI toolkit — wraps cac, picocolors, cli-progress, cli-spinners",
   "license": "MIT",
   "author": "Koko contributors",

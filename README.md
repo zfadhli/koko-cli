@@ -130,13 +130,17 @@ bar.increment(1, { package: "koko" });
 | `clearOnComplete` | `boolean` | `false` |
 | `stopOnComplete` | `boolean` | `false` |
 
-### `createCLI(name, version?)`
+### `createCLI(name, version?, options?)`
 
 Creates an opinionated CLI application builder (wraps cac).
 
 - Auto-attaches `--help` and `--version`
 - Action handlers receive `(options, ctx)` with typed options
 - `ctx` provides `.spinner()`, `.progress()`, `.color`
+
+**Banner** — When a `version` is provided, a styled banner (`name v{version}`) is
+automatically printed to stderr before each command action. Customize or disable
+it with `.banner()`.
 
 ```ts
 const cli = createCLI("deploy", "1.0.0")
@@ -156,6 +160,30 @@ cli.command("build <input>", "Build project", (cmd) => {
 });
 
 cli.parse();
+```
+
+#### `.banner(text?)`
+
+Controls the startup banner shown before command actions.
+
+| Argument | Behavior |
+|----------|----------|
+| _(none)_ or `true` | Default `name v{version}` (bold cyan + yellow) |
+| `false` | Disable banner entirely |
+| `"Custom {name} {version}"` | Custom text; `{name}` and `{version}` are substituted |
+
+```ts
+// Disable the banner
+cli.banner(false)
+
+// Custom banner text
+cli.banner("=== {name} v{version} ===")
+```
+
+The banner can also be controlled via the third argument to `createCLI`:
+
+```ts
+createCLI("myapp", "1.0.0", { banner: false })
 ```
 
 ### Icons

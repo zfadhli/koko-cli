@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] — 2026-06-15
+
+### Added
+
+- **Auto banner** — `createCLI(name, version?)` now prints a styled `name v{version}` banner (bold cyan + yellow) to stderr before every command action. Customize with `.banner("Custom {name} {version}")` or disable with `.banner(false)` / `{ banner: false }` option.
+- **`.banner()` method** on `CLIBuilder` — configure or suppress the startup banner
+- **`BannerOption` / `CLIOptions` types** — exported for TypeScript consumers
+
+[0.2.0]: https://github.com/zfadhli/koko-cli/releases/tag/0.2.0
+
 ## [0.1.1] — 2025-06-09
 
 ### Changed

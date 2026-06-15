@@ -82,8 +82,15 @@ export type CommandSetup = (cmd: CommandBuilder) => void;
 
 // ── CLI ──
 
+export type BannerOption = string | boolean;
+
+export interface CLIOptions {
+  banner?: BannerOption;
+}
+
 export interface CLIBuilder {
   command(name: string, description: string, setup: CommandSetup): CLIBuilder;
   description(text: string): CLIBuilder;
+  banner(text?: BannerOption): CLIBuilder;
   parse(argv?: string[]): void;
 }

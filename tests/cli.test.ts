@@ -137,4 +137,143 @@ describe("createCLI", () => {
     cli.parse(["node", "test", "build"]);
     expect(handler).toHaveBeenCalled();
   });
+
+  // ─── Banner tests ──────────────────────────────────────────
+
+  describe("banner", () => {
+    test("prints name and version before action when version is set", () => {
+      const cli = createCLI("test-app", "1.0.0");
+      const handler = mock();
+      const stderr = mock();
+      const origError = console.error;
+      console.error = stderr;
+
+      cli.command("hello", "Say hello", (cmd) => {
+        cmd.action(handler);
+      });
+
+      cli.parse(["node", "test", "hello"]);
+
+      expect(stderr).toHaveBeenCalledTimes(1);
+      expect(stderr.mock.calls[0][0]).toContain("test-app");
+      expect(stderr.mock.calls[0][0]).toContain("v1.0.0");
+      expect(handler).toHaveBeenCalledTimes(1);
+      console.error = origError;
+    });
+
+    test("suppressed with .banner(false)", () => {
+      const cli = createCLI("test-app", "1.0.0");
+      const handler = mock();
+      const stderr = mock();
+      const origError = console.error;
+      console.error = stderr;
+
+      cli.banner(false);
+      cli.command("hello", "Say hello", (cmd) => {
+        cmd.action(handler);
+      });
+
+      cli.parse(["node", "test", "hello"]);
+
+      expect(stderr).toHaveBeenCalledTimes(0);
+      console.error = origError;
+    });
+
+    test("not printed when version is not set", () => {
+      const cli = createCLI("test-app");
+      const handler = mock();
+      const stderr = mock();
+      const origError = console.error;
+      console.error = stderr;
+
+      cli.command("hello", "Say hello", (cmd) => {
+        cmd.action(handler);
+      });
+
+      cli.parse(["node", "test", "hello"]);
+
+      expect(stderr).toHaveBeenCalledTimes(0);
+      console.error = origError;
+    });
+
+    test("custom text with {name} and {version} substitution", () => {
+      const cli = createCLI("test-app", "2.0.0");
+      const handler = mock();
+      const stderr = mock();
+      const origError = console.error;
+      console.error = stderr;
+
+      cli.banner("=== {name} v{version} ===");
+      cli.command("hello", "Say hello", (cmd) => {
+        cmd.action(handler);
+      });
+
+      cli.parse(["node", "test", "hello"]);
+
+      expect(stderr).toHaveBeenCalledTimes(1);
+      expect(stderr.mock.calls[0][0]).toBe("=== test-app v2.0.0 ===");
+      console.error = origError;
+    });
+
+    test("suppressed via createCLI third argument", () => {
+      const cli = createCLI("test-app", "1.0.0", { banner: false });
+      const handler = mock();
+      const stderr = mock();
+      const origError = console.error;
+      console.error = stderr;
+
+      cli.command("hello", "Say hello", (cmd) => {
+        cmd.action(handler);
+      });
+
+      cli.parse(["node", "test", "hello"]);
+
+      expect(stderr).toHaveBeenCalledTimes(0);
+      console.error = origError;
+    });
+
+    test("not printed for --help flag", () => {
+      const cli = createCLI("test-app", "1.0.0");
+      const handler = mock();
+      const stderr = mock();
+      const exit = mock();
+      const origError = console.error;
+      const origExit = process.exit;
+      console.error = stderr;
+      process.exit = exit as unknown as (code?: number) => never;
+
+      cli.command("hello", "Say hello", (cmd) => {
+        cmd.action(handler);
+      });
+
+      cli.parse(["node", "test", "--help"]);
+
+      expect(stderr).toHaveBeenCalledTimes(0);
+      expect(handler).toHaveBeenCalledTimes(0);
+      console.error = origError;
+      process.exit = origExit;
+    });
+
+    test("not printed for --version flag", () => {
+      const cli = createCLI("test-app", "1.0.0");
+      const handler = mock();
+      const stderr = mock();
+      const exit = mock();
+      const origError = console.error;
+      const origExit = process.exit;
+      console.error = stderr;
+      process.exit = exit as unknown as (code?: number) => never;
+
+      cli.command("hello", "Say hello", (cmd) => {
+        cmd.action(handler);
+      });
+
+      cli.parse(["node", "test", "--version"]);
+
+      expect(stderr).toHaveBeenCalledTimes(0);
+      expect(handler).toHaveBeenCalledTimes(0);
+      console.error = origError;
+      process.exit = origExit;
+    });
+  });
 });
