@@ -4,8 +4,10 @@ import { CliToolkitError } from "./errors";
 import { createProgress } from "./progress";
 import { createSpinner } from "./spinner";
 import type {
+  BannerOption,
   CLIAction,
   CLIBuilder,
+  CLIOptions,
   CommandBuilder,
   CommandSetup,
   ProgressOptions,
@@ -27,11 +29,38 @@ function parsePositionalNames(rawName: string): string[] {
 }
 
 /**
+ * Resolve the banner text to display before a command action runs.
+ *
+ * Returns `null` when the banner should be suppressed.
+ */
+function resolveBanner(
+  config: BannerOption | undefined,
+  name: string,
+  version?: string,
+): string | null {
+  if (config === false || config === undefined) {
+    return null;
+  }
+  if (typeof config === "string") {
+    if (!config) return null; // empty string → suppress
+    return config.replace(/\{name\}/g, name).replace(/\{version\}/g, version ?? "");
+  }
+  // config === true: show default "name v{version}" only when version is set
+  if (!version) return null;
+  return `${color.bold(color.cyan(name))} ${color.yellow(`v${version}`)}`;
+}
+
+/**
  * Create a CLI application with an opinionated builder API.
  *
  * Auto-attaches `--help` and `--version`. Each command's action handler
  * receives a typed options object and a `ctx` with built-in access to
  * spinner, progress bar, and colors.
+ *
+ * When a `version` is provided, a styled banner (`name v{version}`) is
+ * automatically printed to stderr before every command action. Use
+ * `.banner(false)` to disable or `.banner("Custom {name} {version}")`
+ * to customize.
  *
  * ```ts
  * const cli = createCLI('my-app', '1.0.0').description('My CLI')
@@ -50,13 +79,16 @@ function parsePositionalNames(rawName: string): string[] {
  * cli.parse()
  * ```
  */
-export function createCLI(name: string, version?: string): CLIBuilder {
+export function createCLI(name: string, version?: string, options?: CLIOptions): CLIBuilder {
   const cli = cac(name);
 
   if (version) {
     cli.version(version);
   }
   cli.help();
+
+  // Banner config: defaults to true when version is provided
+  let bannerConfig: BannerOption | undefined = options?.banner ?? (version ? true : undefined);
 
   function createContext() {
     return {
@@ -76,6 +108,11 @@ export function createCLI(name: string, version?: string): CLIBuilder {
       return builder;
     },
 
+    banner(text?: BannerOption) {
+      bannerConfig = text ?? true;
+      return builder;
+    },
+
     command(rawName: string, description: string, setup: CommandSetup) {
       const positionalNames = parsePositionalNames(rawName);
       const rawCmd = cli.command(rawName, description);
@@ -91,6 +128,12 @@ export function createCLI(name: string, version?: string): CLIBuilder {
         },
         action<T>(handler: CLIAction<T>) {
           rawCmd.action((...args: unknown[]) => {
+            // Print banner before action (once per parse call)
+            const bannerText = resolveBanner(bannerConfig, name, version);
+            if (bannerText) {
+              console.error(bannerText);
+            }
+
             // CAC passes positional args first, options object last
             const options = args[args.length - 1] as Record<string, unknown>;
             // Merge positional args into options using their declared names

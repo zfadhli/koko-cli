@@ -45,6 +45,9 @@ async function deployTo(env: string) {
 
 // ── CLI definition ──────────────────────────────────────────
 
+// The version "1.0.0" triggers an auto-banner: "deploy-tool v1.0.0"
+// on stderr before every command action. Use .banner(false) to
+// disable or .banner("Custom {name} {version}") to customize.
 const cli = createCLI("deploy-tool", "1.0.0").description(
   "Deployment automation tool with build, deploy, status, and watch commands",
 );
