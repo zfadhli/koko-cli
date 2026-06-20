@@ -1,7 +1,7 @@
 /**
  * koko — Composition examples (real-world patterns)
  *
- * Run:  bun run examples/05-composition.ts
+ * Run:  nub examples/05-composition.ts
  *
  * Demonstrates combining all modules (color + spinner + progress + CLI)
  * into cohesive, reusable patterns:

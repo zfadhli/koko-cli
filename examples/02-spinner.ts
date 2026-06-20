@@ -1,7 +1,7 @@
 /**
  * koko — Spinner examples
  *
- * Run:  bun run examples/02-spinner.ts
+ * Run:  nub examples/02-spinner.ts
  *
  * Demonstrates:
  *   - Basic start / succeed / fail / warn / info lifecycle

@@ -4,7 +4,7 @@ Composition-based CLI toolkit wrapping cac, picocolors, cli-progress, cli-spinne
 
 ## Project
 
-- **Stack:** TypeScript (ESNext, strict, `verbatimModuleSyntax`), Bun runtime, tsdown (build), Biome (lint/format)
+- **Stack:** TypeScript (ESNext, strict, `verbatimModuleSyntax`), Node.js (via nub), tsdown (build), Biome (lint/format)
 - **Entry:** `src/index.ts` — re-exports all public API
 - **Package:** `@zfadhli/koko-cli`, ESM only (`"type": "module"`), Node >=18
 
@@ -12,12 +12,12 @@ Composition-based CLI toolkit wrapping cac, picocolors, cli-progress, cli-spinne
 
 | Command | What it does |
 |---|---|
-| `bun run build` | Build ESM + `.d.mts` to `dist/` via tsdown |
-| `bun test` | Run all tests (bun:test) |
-| `bun run lint` | Biome check on `src` + `tests` |
-| `bun run format` | Biome format --write on `src` + `tests` |
-| `bun run typecheck` | `tsc --noEmit` |
-| `bun run examples` | Run all examples sequentially |
+| `nub run build` | Build ESM + `.d.mts` to `dist/` via tsdown |
+| `nub run test` | Run all tests (vitest) |
+| `nub run lint` | Biome check on `src` + `tests` |
+| `nub run format` | Biome format --write on `src` + `tests` |
+| `nub run typecheck` | `tsc --noEmit` |
+| `nub run examples` | Run all examples sequentially |
 
 ## Architecture
 
@@ -42,7 +42,7 @@ Composition-based CLI toolkit wrapping cac, picocolors, cli-progress, cli-spinne
 - **TypeScript strict** — `strict: true`, `verbatimModuleSyntax`, `isolatedModules`; use `import type` for type-only imports
 - **JSDoc on public APIs** — include a usage example in the doc comment
 - **Formatting** — Biome: spaces, 2-width indent, 100 char line width
-- **Test file mirroring** — `tests/` mirrors `src/` (e.g. `spinner.test.ts` tests `spinner.ts`); uses `bun:test` (`describe`/`test`/`expect`/`spyOn`)
+- **Test file mirroring** — `tests/` mirrors `src/` (e.g. `spinner.test.ts` tests `spinner.ts`); uses `vitest` (`describe`/`test`/`expect`/`vi.fn()`/`vi.spyOn()`)
 - **icons** — prefer importing `ICON_*` constants over hardcoding Unicode characters
 - **Error handling** — throw `CliToolkitError` for validation errors; wrap third-party errors cleanly
 

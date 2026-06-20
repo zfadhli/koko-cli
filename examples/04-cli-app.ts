@@ -1,13 +1,13 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 /**
  * koko — Full CLI app example
  *
  * Run:
- *   bun run examples/04-cli-app.ts --help
- *   bun run examples/04-cli-app.ts build src --out dist --prod
- *   bun run examples/04-cli-app.ts deploy --env production
- *   bun run examples/04-cli-app.ts status
- *   bun run examples/04-cli-app.ts watch src
+ *   nub examples/04-cli-app.ts --help
+ *   nub examples/04-cli-app.ts build src --out dist --prod
+ *   nub examples/04-cli-app.ts deploy --env production
+ *   nub examples/04-cli-app.ts status
+ *   nub examples/04-cli-app.ts watch src
  *
  * Demonstrates:
  *   - Multiple commands with positional args + options

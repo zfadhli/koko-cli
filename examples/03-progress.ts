@@ -1,7 +1,7 @@
 /**
  * koko — Progress bar examples
  *
- * Run:  bun run examples/03-progress.ts
+ * Run:  nub examples/03-progress.ts
  *
  * Demonstrates:
  *   - Basic update / increment / stop

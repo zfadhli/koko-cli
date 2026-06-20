@@ -1,5 +1,6 @@
 import { describe, expect, test, vi } from "vitest";
 import { createCLI } from "../src/cli";
+import { CliToolkitError } from "../src/errors";
 
 describe("createCLI", () => {
   test("creates a CLI builder with the correct interface", () => {
@@ -138,6 +139,14 @@ describe("createCLI", () => {
     expect(handler).toHaveBeenCalled();
   });
 
+  test("parse wraps CAC errors into CliToolkitError", () => {
+    const cli = createCLI("test");
+    cli.command("greet <name>", "Greet someone", (cmd) => {
+      cmd.action(() => {});
+    });
+    expect(() => cli.parse(["node", "test", "greet"])).toThrow(CliToolkitError);
+  });
+
   // ─── Banner tests ──────────────────────────────────────────
 
   describe("banner", () => {
@@ -242,16 +251,19 @@ describe("createCLI", () => {
       console.error = stderr;
       process.exit = exit as unknown as (code?: number) => never;
 
-      cli.command("hello", "Say hello", (cmd) => {
-        cmd.action(handler);
-      });
+      try {
+        cli.command("hello", "Say hello", (cmd) => {
+          cmd.action(handler);
+        });
 
-      cli.parse(["node", "test", "--help"]);
+        cli.parse(["node", "test", "--help"]);
 
-      expect(stderr).toHaveBeenCalledTimes(0);
-      expect(handler).toHaveBeenCalledTimes(0);
-      console.error = origError;
-      process.exit = origExit;
+        expect(stderr).toHaveBeenCalledTimes(0);
+        expect(handler).toHaveBeenCalledTimes(0);
+      } finally {
+        console.error = origError;
+        process.exit = origExit;
+      }
     });
 
     test("not printed for --version flag", () => {
@@ -264,16 +276,19 @@ describe("createCLI", () => {
       console.error = stderr;
       process.exit = exit as unknown as (code?: number) => never;
 
-      cli.command("hello", "Say hello", (cmd) => {
-        cmd.action(handler);
-      });
+      try {
+        cli.command("hello", "Say hello", (cmd) => {
+          cmd.action(handler);
+        });
 
-      cli.parse(["node", "test", "--version"]);
+        cli.parse(["node", "test", "--version"]);
 
-      expect(stderr).toHaveBeenCalledTimes(0);
-      expect(handler).toHaveBeenCalledTimes(0);
-      console.error = origError;
-      process.exit = origExit;
+        expect(stderr).toHaveBeenCalledTimes(0);
+        expect(handler).toHaveBeenCalledTimes(0);
+      } finally {
+        console.error = origError;
+        process.exit = origExit;
+      }
     });
   });
 });

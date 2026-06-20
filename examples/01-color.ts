@@ -1,7 +1,7 @@
 /**
  * koko — Color examples
  *
- * Run:  bun run examples/01-color.ts
+ * Run:  nub examples/01-color.ts
  *
  * Demonstrates:
  *   - All 24 color/style functions

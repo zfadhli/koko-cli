@@ -1,6 +1,7 @@
 import process from "node:process";
 import spinners from "cli-spinners";
 import { color } from "./color";
+import { CliToolkitError } from "./errors";
 import { ICON_ERROR, ICON_INFO, ICON_SUCCESS, ICON_WARN } from "./icons";
 import type { SpinnerInstance, SpinnerOptions, SpinnerStyle } from "./types";
 
@@ -42,6 +43,11 @@ export function createSpinner(text?: string, options?: SpinnerOptions): SpinnerI
   } = options ?? {};
 
   const frameSet = frameSets[style as SpinnerStyle];
+  if (!frameSet && !customFrames) {
+    throw new CliToolkitError(
+      `Unknown spinner style: "${style}". Available styles: ${Object.keys(frameSets).join(", ")}`,
+    );
+  }
   const frames = customFrames ?? frameSet.frames;
   const interval = customInterval ?? frameSet.interval;
 

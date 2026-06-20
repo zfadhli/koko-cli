@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+import { CliToolkitError } from "../src/errors";
 import { ICON_ERROR, ICON_INFO, ICON_SUCCESS, ICON_WARN } from "../src/icons";
 import { createSpinner } from "../src/spinner";
 
@@ -81,7 +82,7 @@ describe("createSpinner", () => {
   });
 
   test("throws on invalid spinner style", () => {
-    expect(() => createSpinner("test", { style: "nonexistent" as never })).toThrow(TypeError);
+    expect(() => createSpinner("test", { style: "nonexistent" as never })).toThrow(CliToolkitError);
   });
 
   test("text getter/setter works", () => {
