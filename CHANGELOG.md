@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] — 2026-06-20
+
+### Changed
+
+- **Migrated dev toolchain from Bun to nub.js** — switched to nub runtime for running scripts, vitest replaces `bun:test` for testing. `lock.yaml` replaces `bun.lock`. CI updated to `nubjs/setup-nub`.
+- **Simplified CLI API surface** — removed `BannerOption`, `CLIOptions`, and `OptionConfig` types (inlined into their usage sites). Consumers using these types for annotations should switch to inline types or `string | boolean`.
+- **Added `sideEffects: false`** to `package.json` — enables tree-shaking for bundler consumers.
+- **Added lefthook pre-commit hooks** — Biome lint + `tsc --noEmit` run before every commit.
+
+### Fixed
+
+- **Spinner invalid-style error** — `createSpinner()` now throws `CliToolkitError` with a descriptive message listing available styles, instead of a raw `TypeError`.
+
+### Added
+
+- **Test coverage for CAC error wrapping** — `createCLI.parse()` error handling path now tested.
+- **Test coverage for `CliToolkitError` and icon constants** — two new test files covering public API basics.
+- **`process.exit` mock hygiene** — banner tests wrap mocked globals in try/finally to prevent cascading failures.
+
+[0.3.0]: https://github.com/zfadhli/koko-cli/releases/tag/0.3.0
+
 ## [0.2.1] — 2026-06-15
 
 ### Fixed
