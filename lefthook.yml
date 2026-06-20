@@ -1,0 +1,8 @@
+pre-commit:
+  commands:
+    lint:
+      run: nubx biome check --no-errors-on-unmatched {staged_files}
+      glob: "*.{js,ts,jsx,tsx,mjs,cjs,json,jsonc}"
+    typecheck:
+      run: nub run typecheck
+      glob: "*.{ts,tsx,mts,cts}"
