@@ -1,5 +1,4 @@
 import { afterEach, beforeEach, describe, expect, spyOn, test } from "bun:test";
-import { CliToolkitError } from "../src/errors";
 import { ICON_ERROR, ICON_INFO, ICON_SUCCESS, ICON_WARN } from "../src/icons";
 import { createSpinner } from "../src/spinner";
 
@@ -82,7 +81,7 @@ describe("createSpinner", () => {
   });
 
   test("throws on invalid spinner style", () => {
-    expect(() => createSpinner("test", { style: "nonexistent" as never })).toThrow(CliToolkitError);
+    expect(() => createSpinner("test", { style: "nonexistent" as never })).toThrow(TypeError);
   });
 
   test("text getter/setter works", () => {

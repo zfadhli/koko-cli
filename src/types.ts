@@ -67,13 +67,12 @@ export interface CommandContext {
   color: { [K in ColorName | StyleName]: (text: string) => string };
 }
 
-export interface OptionConfig {
-  default?: unknown;
-  required?: boolean;
-}
-
 export interface CommandBuilder {
-  option(name: string, description?: string, config?: OptionConfig): CommandBuilder;
+  option(
+    name: string,
+    description?: string,
+    config?: { default?: unknown; required?: boolean },
+  ): CommandBuilder;
   alias(name: string): CommandBuilder;
   action<T>(handler: CLIAction<T>): void;
 }
@@ -82,15 +81,9 @@ export type CommandSetup = (cmd: CommandBuilder) => void;
 
 // ── CLI ──
 
-export type BannerOption = string | boolean;
-
-export interface CLIOptions {
-  banner?: BannerOption;
-}
-
 export interface CLIBuilder {
   command(name: string, description: string, setup: CommandSetup): CLIBuilder;
   description(text: string): CLIBuilder;
-  banner(text?: BannerOption): CLIBuilder;
+  banner(text?: string | boolean): CLIBuilder;
   parse(argv?: string[]): void;
 }
