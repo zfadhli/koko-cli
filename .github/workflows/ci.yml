@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: oven-sh/setup-bun@v2
+      - uses: nubjs/setup-nub@v0
         with:
-          bun-version: latest
-      - run: bun install --frozen-lockfile
-      - run: bunx biome ci src tests
-      - run: bun run build
-      - run: bun test
+          cache: true
+      - run: nub install --frozen-lockfile
+      - run: nubx biome ci src tests
+      - run: nub run build
+      - run: nub run test

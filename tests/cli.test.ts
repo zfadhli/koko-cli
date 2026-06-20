@@ -1,4 +1,4 @@
-import { describe, expect, mock, test } from "bun:test";
+import { describe, expect, test, vi } from "vitest";
 import { createCLI } from "../src/cli";
 
 describe("createCLI", () => {
@@ -26,7 +26,7 @@ describe("createCLI", () => {
 
   test("command action receives merged options and ctx", () => {
     const cli = createCLI("test");
-    const handler = mock();
+    const handler = vi.fn();
 
     cli.command("greet <name>", "Greet someone", (cmd) => {
       cmd.option("--greeting <text>", "Greeting");
@@ -52,7 +52,7 @@ describe("createCLI", () => {
 
   test("command without positional args still works", () => {
     const cli = createCLI("test");
-    const handler = mock();
+    const handler = vi.fn();
 
     cli.command("status", "Show status", (cmd) => {
       cmd.option("--verbose", "Verbose output");
@@ -69,7 +69,7 @@ describe("createCLI", () => {
 
   test("multiple positional args are merged correctly", () => {
     const cli = createCLI("test");
-    const handler = mock();
+    const handler = vi.fn();
 
     cli.command("copy <src> <dest>", "Copy file", (cmd) => {
       cmd.action(handler);
@@ -106,7 +106,7 @@ describe("createCLI", () => {
 
   test("ctx.spinner creates a working spinner", () => {
     const cli = createCLI("test");
-    const handler = mock();
+    const handler = vi.fn();
 
     cli.command("task", "Run task", (cmd) => {
       cmd.action((_options, ctx) => {
@@ -123,7 +123,7 @@ describe("createCLI", () => {
 
   test("ctx.progress creates a working progress bar", () => {
     const cli = createCLI("test");
-    const handler = mock();
+    const handler = vi.fn();
 
     cli.command("build", "Build", (cmd) => {
       cmd.action((_options, ctx) => {
@@ -143,8 +143,8 @@ describe("createCLI", () => {
   describe("banner", () => {
     test("prints name and version before action when version is set", () => {
       const cli = createCLI("test-app", "1.0.0");
-      const handler = mock();
-      const stderr = mock();
+      const handler = vi.fn();
+      const stderr = vi.fn();
       const origError = console.error;
       console.error = stderr;
 
@@ -163,8 +163,8 @@ describe("createCLI", () => {
 
     test("suppressed with .banner(false)", () => {
       const cli = createCLI("test-app", "1.0.0");
-      const handler = mock();
-      const stderr = mock();
+      const handler = vi.fn();
+      const stderr = vi.fn();
       const origError = console.error;
       console.error = stderr;
 
@@ -181,8 +181,8 @@ describe("createCLI", () => {
 
     test("not printed when version is not set", () => {
       const cli = createCLI("test-app");
-      const handler = mock();
-      const stderr = mock();
+      const handler = vi.fn();
+      const stderr = vi.fn();
       const origError = console.error;
       console.error = stderr;
 
@@ -198,8 +198,8 @@ describe("createCLI", () => {
 
     test("custom text with {name} and {version} substitution", () => {
       const cli = createCLI("test-app", "2.0.0");
-      const handler = mock();
-      const stderr = mock();
+      const handler = vi.fn();
+      const stderr = vi.fn();
       const origError = console.error;
       console.error = stderr;
 
@@ -217,8 +217,8 @@ describe("createCLI", () => {
 
     test("suppressed via createCLI third argument", () => {
       const cli = createCLI("test-app", "1.0.0", { banner: false });
-      const handler = mock();
-      const stderr = mock();
+      const handler = vi.fn();
+      const stderr = vi.fn();
       const origError = console.error;
       console.error = stderr;
 
@@ -234,9 +234,9 @@ describe("createCLI", () => {
 
     test("not printed for --help flag", () => {
       const cli = createCLI("test-app", "1.0.0");
-      const handler = mock();
-      const stderr = mock();
-      const exit = mock();
+      const handler = vi.fn();
+      const stderr = vi.fn();
+      const exit = vi.fn();
       const origError = console.error;
       const origExit = process.exit;
       console.error = stderr;
@@ -256,9 +256,9 @@ describe("createCLI", () => {
 
     test("not printed for --version flag", () => {
       const cli = createCLI("test-app", "1.0.0");
-      const handler = mock();
-      const stderr = mock();
-      const exit = mock();
+      const handler = vi.fn();
+      const stderr = vi.fn();
+      const exit = vi.fn();
       const origError = console.error;
       const origExit = process.exit;
       console.error = stderr;

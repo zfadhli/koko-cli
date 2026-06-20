@@ -1,4 +1,4 @@
-import { describe, expect, test } from "bun:test";
+import { describe, expect, test } from "vitest";
 import { CliToolkitError } from "../src/errors";
 import { createProgress } from "../src/progress";
 

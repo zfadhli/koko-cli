@@ -27,16 +27,16 @@
   ],
   "scripts": {
     "build": "tsdown",
-    "test": "bun test",
+    "test": "vitest run",
     "lint": "biome check src tests",
     "format": "biome format --write src tests",
     "typecheck": "tsc --noEmit",
-    "example:color": "bun run examples/01-color.ts",
-    "example:spinner": "bun run examples/02-spinner.ts",
-    "example:progress": "bun run examples/03-progress.ts",
-    "example:cli": "bun run examples/04-cli-app.ts",
-    "example:composition": "bun run examples/05-composition.ts",
-    "examples": "bun run examples/01-color.ts && bun run examples/02-spinner.ts && bun run examples/03-progress.ts && bun run examples/04-cli-app.ts --help && bun run examples/05-composition.ts"
+    "example:color": "nub examples/01-color.ts",
+    "example:spinner": "nub examples/02-spinner.ts",
+    "example:progress": "nub examples/03-progress.ts",
+    "example:cli": "nub examples/04-cli-app.ts",
+    "example:composition": "nub examples/05-composition.ts",
+    "examples": "nub examples/01-color.ts && nub examples/02-spinner.ts && nub examples/03-progress.ts && nub examples/04-cli-app.ts --help && nub examples/05-composition.ts"
   },
   "dependencies": {
     "cac": "^7.0.0",
@@ -46,9 +46,17 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.16",
-    "@types/bun": "^1.3.14",
     "@types/cli-progress": "^3.11.0",
     "tsdown": "^0.22.2",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
+  },
+  "packageManager": "nub@0.1.5",
+  "devEngines": {
+    "packageManager": {
+      "name": "nub",
+      "version": "^0.1.5",
+      "onFail": "warn"
+    }
   }
 }
