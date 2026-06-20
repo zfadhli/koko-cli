@@ -48,7 +48,6 @@ export function createSpinner(text?: string, options?: SpinnerOptions): SpinnerI
       `Unknown spinner style: "${style}". Available styles: ${Object.keys(frameSets).join(", ")}`,
     );
   }
-
   const frames = customFrames ?? frameSet.frames;
   const interval = customInterval ?? frameSet.interval;
 

@@ -4,82 +4,19 @@ import { CliToolkitError } from "./errors";
 import { createProgress } from "./progress";
 import { createSpinner } from "./spinner";
 import type {
-  BannerOption,
   CLIAction,
   CLIBuilder,
-  CLIOptions,
   CommandBuilder,
   CommandSetup,
   ProgressOptions,
   SpinnerInstance,
 } from "./types";
 
-/**
- * Parse positional argument names from a CAC command pattern.
- *
- * `'build <input> [output]'` → `['input', 'output']`
- */
-function parsePositionalNames(rawName: string): string[] {
-  const names: string[] = [];
-  const re = /[<[](\w+)[>\]]/g;
-  for (let match = re.exec(rawName); match; match = re.exec(rawName)) {
-    names.push(match[1]);
-  }
-  return names;
-}
-
-/**
- * Resolve the banner text to display before a command action runs.
- *
- * Returns `null` when the banner should be suppressed.
- */
-function resolveBanner(
-  config: BannerOption | undefined,
+export function createCLI(
   name: string,
   version?: string,
-): string | null {
-  if (config === false || config === undefined) {
-    return null;
-  }
-  if (typeof config === "string") {
-    if (!config) return null; // empty string → suppress
-    return config.replace(/\{name\}/g, name).replace(/\{version\}/g, version ?? "");
-  }
-  // config === true: show default "name v{version}" only when version is set
-  if (!version) return null;
-  return `${color.bold(color.cyan(name))} ${color.yellow(`v${version}`)}`;
-}
-
-/**
- * Create a CLI application with an opinionated builder API.
- *
- * Auto-attaches `--help` and `--version`. Each command's action handler
- * receives a typed options object and a `ctx` with built-in access to
- * spinner, progress bar, and colors.
- *
- * When a `version` is provided, a styled banner (`name v{version}`) is
- * automatically printed to stderr before every command action. Use
- * `.banner(false)` to disable or `.banner("Custom {name} {version}")`
- * to customize.
- *
- * ```ts
- * const cli = createCLI('my-app', '1.0.0').description('My CLI')
- *
- * cli.command('build <input>', 'Build the project', (cmd) => {
- *   cmd.option('--out <dir>', 'Output dir', { default: 'dist' })
- *   cmd.option('--prod', 'Production mode')
- *   cmd.action(async (options, ctx) => {
- *     const spin = ctx.spinner('Building...')
- *     spin.start()
- *     // ...
- *     spin.succeed('Built!')
- *   })
- * })
- *
- * cli.parse()
- * ```
- */
-export function createCLI(name: string, version?: string, options?: CLIOptions): CLIBuilder {
+  options?: { banner?: string | boolean },
+): CLIBuilder {
   const cli = cac(name);
 
   if (version) {
@@ -88,7 +25,7 @@ export function createCLI(name: string, version?: string, options?: CLIOptions):
   cli.help();
 
   // Banner config: defaults to true when version is provided
-  let bannerConfig: BannerOption | undefined = options?.banner ?? (version ? true : undefined);
+  let bannerConfig: string | boolean | undefined = options?.banner ?? (version ? true : undefined);
 
   function createContext() {
     return {
@@ -108,13 +45,18 @@ export function createCLI(name: string, version?: string, options?: CLIOptions):
       return builder;
     },
 
-    banner(text?: BannerOption) {
+    banner(text?: string | boolean) {
       bannerConfig = text ?? true;
       return builder;
     },
 
     command(rawName: string, description: string, setup: CommandSetup) {
-      const positionalNames = parsePositionalNames(rawName);
+      // Parse positional argument names from pattern like 'build <input> [output]'
+      const positionalNames: string[] = [];
+      const re = /[<[](\w+)[>\]]/g;
+      for (let match = re.exec(rawName); match; match = re.exec(rawName)) {
+        positionalNames.push(match[1]);
+      }
       const rawCmd = cli.command(rawName, description);
 
       const cmdBuilder: CommandBuilder = {
@@ -128,8 +70,16 @@ export function createCLI(name: string, version?: string, options?: CLIOptions):
         },
         action<T>(handler: CLIAction<T>) {
           rawCmd.action((...args: unknown[]) => {
-            // Print banner before action (once per parse call)
-            const bannerText = resolveBanner(bannerConfig, name, version);
+            // Resolve and print banner before action
+            const cfg = bannerConfig;
+            let bannerText: string | null = null;
+            if (cfg === true) {
+              if (version) {
+                bannerText = `${color.bold(color.cyan(name))} ${color.yellow(`v${version}`)}`;
+              }
+            } else if (typeof cfg === "string" && cfg) {
+              bannerText = cfg.replace(/\{name\}/g, name).replace(/\{version\}/g, version ?? "");
+            }
             if (bannerText) {
               console.error(bannerText);
             }

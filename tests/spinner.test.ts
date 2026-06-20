@@ -1,13 +1,13 @@
-import { afterEach, beforeEach, describe, expect, spyOn, test } from "bun:test";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 import { CliToolkitError } from "../src/errors";
 import { ICON_ERROR, ICON_INFO, ICON_SUCCESS, ICON_WARN } from "../src/icons";
 import { createSpinner } from "../src/spinner";
 
 describe("createSpinner", () => {
-  let stdoutWrite: ReturnType<typeof spyOn>;
+  let stdoutWrite: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
-    stdoutWrite = spyOn(process.stdout, "write").mockImplementation(() => true);
+    stdoutWrite = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
   });
 
   afterEach(() => {

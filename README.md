@@ -14,8 +14,6 @@ koko follows a **function-based Composition API** (inspired by Vue 3):
 ## Install
 
 ```bash
-bun add @zfadhli/koko-cli
-# or
 npm install @zfadhli/koko-cli
 ```
 
@@ -219,14 +217,14 @@ try {
 
 ```bash
 # Run any example
-bun run examples/01-color.ts        # all color functions
-bun run examples/02-spinner.ts      # spinner lifecycle + styles
-bun run examples/03-progress.ts     # progress bars + payloads
-bun run examples/04-cli-app.ts      # full CLI app with ctx
-bun run examples/05-composition.ts  # real-world patterns
+nub examples/01-color.ts         # all color functions
+nub examples/02-spinner.ts       # spinner lifecycle + styles
+nub examples/03-progress.ts      # progress bars + payloads
+nub examples/04-cli-app.ts       # full CLI app with ctx
+nub examples/05-composition.ts   # real-world patterns
 
 # All at once
-bun run examples
+nub run examples
 ```
 
 ## License
