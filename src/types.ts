@@ -1,4 +1,4 @@
-import type { ColorName, StyleName } from "./color";
+import type { Format, kaler } from "./color";
 
 // ── Progress ──
 
@@ -38,7 +38,7 @@ export type SpinnerStyle =
 export interface SpinnerOptions {
   text?: string;
   style?: SpinnerStyle;
-  color?: ColorName;
+  color?: Format;
   frames?: string[];
   interval?: number;
 }
@@ -64,7 +64,7 @@ export type CLIAction<T = Record<string, unknown>> = (
 export interface CommandContext {
   spinner(text?: string): SpinnerInstance;
   progress(options: ProgressOptions): ProgressInstance;
-  color: { [K in ColorName | StyleName]: (text: string) => string };
+  color: kaler;
 }
 
 export interface CommandBuilder {

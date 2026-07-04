@@ -1,7 +1,24 @@
-import pc from "picocolors";
+import { styleText } from "node:util";
 
-// Color/style names exported by picocolors
-export type ColorName =
+/**
+ * Valid format names for `node:util.styleText`.
+ * Covers all runtime-supported names including extras beyond the `@types/node` `InspectColor` type.
+ */
+export type Format =
+  | "reset"
+  | "bold"
+  | "dim"
+  | "italic"
+  | "underline"
+  | "inverse"
+  | "hidden"
+  | "strikethrough"
+  | "blink"
+  | "doubleunderline"
+  | "framed"
+  | "overlined"
+  | "faint"
+  | "conceal"
   | "black"
   | "red"
   | "green"
@@ -11,6 +28,7 @@ export type ColorName =
   | "cyan"
   | "white"
   | "gray"
+  | "grey"
   | "blackBright"
   | "redBright"
   | "greenBright"
@@ -18,58 +36,50 @@ export type ColorName =
   | "blueBright"
   | "magentaBright"
   | "cyanBright"
-  | "whiteBright";
-
-export type StyleName =
-  | "reset"
-  | "bold"
-  | "dim"
-  | "italic"
-  | "underline"
-  | "inverse"
-  | "hidden"
-  | "strikethrough";
-
-// Build the color palette type from all color + style names
-type ColorFunctions = {
-  [K in ColorName | StyleName]: (text: string) => string;
-};
+  | "whiteBright"
+  | "bgBlack"
+  | "bgRed"
+  | "bgGreen"
+  | "bgYellow"
+  | "bgBlue"
+  | "bgMagenta"
+  | "bgCyan"
+  | "bgWhite"
+  | "bgGray"
+  | "bgGrey"
+  | "bgBlackBright"
+  | "bgRedBright"
+  | "bgGreenBright"
+  | "bgYellowBright"
+  | "bgBlueBright"
+  | "bgMagentaBright"
+  | "bgCyanBright"
+  | "bgWhiteBright";
 
 /**
- * Minimal color palette — a plain object wrapping picocolors.
- *
- * Stateless, no factory needed. Import and use:
+ * Chainable color object.
  *
  * ```ts
  * import { color } from 'koko'
  * color.red('error')
- * color.bold(color.green('success'))
+ * color.bold.green('success')
+ * color.red.bold.underline('urgent')
  * ```
  */
-export const color: ColorFunctions = {
-  reset: pc.reset,
-  bold: pc.bold,
-  dim: pc.dim,
-  italic: pc.italic,
-  underline: pc.underline,
-  inverse: pc.inverse,
-  hidden: pc.hidden,
-  strikethrough: pc.strikethrough,
-  black: pc.black,
-  red: pc.red,
-  green: pc.green,
-  yellow: pc.yellow,
-  blue: pc.blue,
-  magenta: pc.magenta,
-  cyan: pc.cyan,
-  white: pc.white,
-  gray: pc.gray,
-  blackBright: pc.blackBright,
-  redBright: pc.redBright,
-  greenBright: pc.greenBright,
-  yellowBright: pc.yellowBright,
-  blueBright: pc.blueBright,
-  magentaBright: pc.magentaBright,
-  cyanBright: pc.cyanBright,
-  whiteBright: pc.whiteBright,
+export type kaler = ((text: string) => string) & {
+  [K in Format]: kaler;
 };
+
+function create(format: Format[]): kaler {
+  return new Proxy((text: string) => text, {
+    get: (_, prop) => create([...format, prop as Format]),
+    // styleText types don't cover all runtime format names; cast is safe
+    apply: (_, __, [text]: [string]) => styleText(format as Parameters<typeof styleText>[0], text),
+  }) as kaler;
+}
+
+/**
+ * Color API built on `node:util.styleText`.
+ * Zero dependencies — uses Node.js built-in.
+ */
+export const color = create([]);

@@ -1,5 +1,5 @@
 export { createCLI } from "./cli";
-export type { ColorName, StyleName } from "./color";
+export type { Format, kaler } from "./color";
 export { color } from "./color";
 export { CliToolkitError } from "./errors";
 export { ICON_ERROR, ICON_INFO, ICON_SUCCESS, ICON_WARN } from "./icons";
