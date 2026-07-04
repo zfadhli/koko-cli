@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] — 2026-07-04
+
+### Changed
+
+- **Replaced picocolors with `node:util.styleText`** — color API is now zero-dependency,
+  using Node.js built-in ANSI styling. The `color` object is now a chainable chalk-like
+  proxy: `color.bold.green('success')`, `color.red.bold.underline('urgent')`.
+
+### Added
+
+- **`Format` type union** — typed list of all ~60 valid format names (text colors, bright
+  colors, background colors, text styles) accepted by `node:util.styleText`, exported for
+  consumers.
+- **`kaler` type** — replaces `Chalk` as the type for the chainable color object. Exported
+  for typing `CommandContext.color` and custom color wrappers.
+- **Background color formatters** — 16 `bg*` formatters (`color.bgRed`, `color.bgBlue`,
+  etc.) now available for free via `styleText`.
+
+### Removed
+
+- **picocolors dependency** — dropped from `package.json`. No more third-party color lib.
+- **`ColorName` / `StyleName` types** — replaced by `Format`.
+
+[0.4.0]: https://github.com/zfadhli/koko-cli/releases/tag/0.4.0
+
 ## [0.3.0] — 2026-06-20
 
 ### Changed

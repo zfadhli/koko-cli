@@ -2,8 +2,8 @@
   "name": "@zfadhli/koko-cli",
   "type": "module",
   "sideEffects": false,
-  "version": "0.3.0",
-  "description": "Composition-based CLI toolkit — wraps cac, picocolors, cli-progress, cli-spinners",
+  "version": "0.4.0",
+  "description": "Composition-based CLI toolkit — wraps cac, cli-progress, cli-spinners",
   "license": "MIT",
   "author": "Koko contributors",
   "repository": {
@@ -42,8 +42,7 @@
   "dependencies": {
     "cac": "^7.0.0",
     "cli-progress": "^3.12.0",
-    "cli-spinners": "^3.4.0",
-    "picocolors": "^1.1.1"
+    "cli-spinners": "^3.4.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.5.0",

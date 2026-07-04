@@ -25,7 +25,7 @@ describe("color", () => {
     expect(nested).toContain("error");
   });
 
-  test("empty string returns empty string (picocolors behavior)", () => {
+  test("empty string returns empty string", () => {
     const output = color.red("");
     expect(output).toBe("");
   });
